@@ -39,6 +39,7 @@ const rules = {
         <el-input v-model="form.username" placeholder="请输入用户名">
           <template #prefix>
             <el-icon> </el-icon>
+
           </template>
         </el-input>
       </el-form-item>
