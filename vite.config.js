@@ -13,6 +13,20 @@ export default defineConfig({
       '~': path.resolve(__dirname, 'src') // 设置 ~ 指向 根 目录
     }
   },
+
+  server: {
+    // host: '0.0.0.0',
+    // port: 8080,
+    // open: true,
+    // cors: true,
+    proxy: {  // 代理
+      '/api': { // 匹配 /api 代替下面的域名 baseUrl --> /api
+        target: 'http://ceshi13.dishait.cn:80/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  },
   plugins: [vue(), WindiCSS(),],
 
 })
