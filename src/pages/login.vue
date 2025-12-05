@@ -41,11 +41,10 @@
 <script setup>
 import {reactive, ref} from "vue";
 
-import {login} from "~/api/manager.js";
-
-import {ElNotification} from "element-plus";
+import {login,getInfo} from "~/api/manager.js";
 
 import {useRouter} from  'vue-router'
+
 
 
 const form = reactive({
@@ -75,26 +74,18 @@ const onSubmit = () => {
       }
       login(form.username, form.password)
       .then(res => {
-         console.log();
-         // 提示成功
-        ElNotification( {
-          title: 'Success',
-          message: res.data.message,
-          type: 'success',
-        })
         // 存储 token 和用户相关信息
-
+        setToken(res.token)
+        // 存储用户信息
+        getInfo().then(res2 => {
+          console.log(res2)
+        })
         // 跳转到首页
         router.push('/')
        })
-      .catch(err => {
-        console.log();
-        ElNotification({
-          title: 'Error',
-          message: err.response.data.message || '登录失败',
-          type: 'error',
-          duration: 3000
-        })
+      .finally(() => {
+          // 防止登录成功后，重复点击登录
+        loading.value = false
       })
     })
 }
